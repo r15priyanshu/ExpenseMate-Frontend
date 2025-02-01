@@ -1,0 +1,106 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 offset-md-4">
+            <h2 class="text-center mb-4">REGISTER</h2>
+            <form [formGroup]="registerFormGroup" (ngSubmit)="handleRegister()">
+                <div class="mb-3">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="firstName" class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="firstName" aria-describedby="firstName"
+                                formControlName="firstName"
+                                [class.is-invalid]="controls['firstName'].touched && controls['firstName'].invalid">
+                            @if(controls['firstName'].touched && controls['firstName'].invalid){
+                            <div class="form-text text-danger">
+                                @if(controls['firstName'].hasError('required')){
+                                <div>This is mandatory field !</div>
+                                }
+                                @if(controls['firstName'].hasError('minlength')){
+                                <div>Minimum Length Required : {{
+                                    controls['firstName'].errors?.['minlength']?.requiredLength }} !</div>
+                                }
+                            </div>
+                            }
+                        </div>
+                        <div class="col-md-6">
+                            <label for="lastName" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" id="lastName" aria-describedby="lastName"
+                                formControlName="lastName">
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input type="text" class="form-control" id="email" aria-describedby="email" formControlName="email"
+                        [class.is-invalid]="controls['email'].touched && controls['email'].invalid">
+                    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                    @if(controls['email'].touched && controls['email'].invalid){
+                    <div class="form-text text-danger">
+                        @if(controls['email'].hasError('required')){
+                        <div>This is mandatory field !</div>
+                        }
+                        @if(controls['email'].hasError('minlength')){
+                        <div>Minimum Length Required : {{ controls['email'].errors?.['minlength']?.requiredLength }} !
+                        </div>
+                        }
+                    </div>
+                    }
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <div class="input-group">
+                        <input [type]="isPasswordHidden() ? 'password' : 'text'" class="form-control" id="password" aria-describedby="password"
+                            formControlName="password"
+                            [class.is-invalid]="controls['password'].touched && controls['password'].invalid">
+                        <span class="input-group-text" (click)="toggleVisibility()">
+                            <mat-icon>{{isPasswordHidden() ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </span>
+                    </div>
+                    @if(controls['password'].touched && controls['password'].invalid){
+                    <div class="form-text text-danger">
+                        @if(controls['password'].hasError('required')){
+                        <div>This is mandatory field !</div>
+                        }
+                        @if(controls['password'].hasError('minlength')){
+                        <div>Minimum Length Required : {{ controls['password'].errors?.['minlength']?.requiredLength }}
+                            !
+                        </div>
+                        }
+                    </div>
+                    }
+                </div>
+
+                <div class="mb-3">
+                    <label for="confirmPassword" class="form-label">Confirm Password</label>
+                    <input type="password" class="form-control" id="confirmPassword" aria-describedby="confirmPassword"
+                        formControlName="confirmPassword"
+                        [class.is-invalid]="controls['confirmPassword'].touched && controls['confirmPassword'].invalid">
+                    @if(controls['confirmPassword'].touched && controls['confirmPassword'].invalid){
+                    <div class="form-text text-danger">
+                        @if(controls['confirmPassword'].hasError('required')){
+                        <div>This is mandatory field !!</div>
+                        }
+                    </div>
+                    }
+                    @if(controls['confirmPassword'].touched && controls['confirmPassword'].value!==''){
+                    @if(registerFormGroup.hasError('confirmPasswordMismatch')){
+                    <div class="form-text text-danger">
+                        <div>Confirm password doesn't match !</div>
+                    </div>
+                    }@else{
+                    <div class="form-text text-success">
+                        <div>Confirm password matched !</div>
+                    </div>
+                    }
+                    }
+                </div>
+
+                <div class="d-grid gap-2 mt-3">
+                    <button class="btn btn-primary" type="submit">Register</button>
+                    <button class="btn btn-danger" type="button" (click)="handleReset()">Reset</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
