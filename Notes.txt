@@ -21,3 +21,8 @@ ADDING BOOTSTRAP
 ----------------
 1. ng add @angular/material
 2. Rebuild and Restart.
+
+==============================================================================================================
+ADDING ENVIRONTMENT FILES
+-------------------------
+ng generate environments
