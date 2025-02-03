@@ -1,0 +1,48 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 offset-md-4">
+            <h2 class="text-center mb-4">USER LOGIN</h2>
+            <form #loginForm="ngForm" (ngSubmit)="handleLogin(loginForm)">
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input type="text" class="form-control rounded-5" id="email" aria-describedby="email" name="email"
+                        [(ngModel)]="loginData.email" #email="ngModel" required minlength="10"
+                        [class.is-invalid]="email.touched && email.invalid">
+                    @if(email.touched && email.invalid){
+                    <div class="form-text text-danger">
+                        @if(email.hasError('required')){
+                        <div>This is mandatory field !</div>
+                        }
+                        @if(email.hasError('minlength')){
+                        <div>Minimum Length Required : {{email.errors?.['minlength']?.requiredLength }} !</div>
+                        }
+                    </div>
+                    }
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control rounded-5" id="password" aria-describedby="password"
+                        name="password" [(ngModel)]="loginData.password" #password="ngModel" required minlength="5"
+                        [class.is-invalid]="password.touched && password.invalid">
+                    @if(password.touched && password.invalid){
+                    <div class="form-text text-danger">
+                        @if(password.hasError('required')){
+                        <div>This is mandatory field !</div>
+                        }
+                        @if(password.hasError('minlength')){
+                        <div>Minimum Length Required : {{password.errors?.['minlength']?.requiredLength }} !</div>
+                        }
+                    </div>
+                    }
+                </div>
+
+                <div class="d-grid gap-2 mt-3">
+                    <button class="btn btn-primary" type="submit">Login</button>
+                    <button class="btn btn-danger" type="button" (click)="handleReset(loginForm)">Reset</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
