@@ -8,6 +8,8 @@ import {
 } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { confirmPasswordValidator } from '../../validators/confirm-password-validator';
+import { LoginAndRegisterService } from '../../services/login-and-register.service';
+import { UserDto } from '../../dtos/UserDto';
 
 @Component({
   selector: 'app-register',
@@ -27,7 +29,10 @@ export class RegisterComponent {
     confirmPassword: '',
   };
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private loginAndRegisterService: LoginAndRegisterService
+  ) {
     this.registerFormGroup = this.formBuilder.group(
       {
         firstName: new FormControl(this.initialFormValues.firstName, [
@@ -58,6 +63,18 @@ export class RegisterComponent {
 
   handleRegister() {
     console.log(this.registerFormGroup.value);
+    const { firstName, lastName, email, password } =
+      this.registerFormGroup.value;
+
+    const userDto = new UserDto(firstName, lastName, email, password);
+    this.loginAndRegisterService.registerUser(userDto).subscribe({
+      next: (result) => {
+        console.log(result);
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
   }
 
   handleReset() {
