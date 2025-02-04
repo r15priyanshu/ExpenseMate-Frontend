@@ -1,6 +1,7 @@
 import { environment } from '../../environments/environment';
 
 export const GlobalConstants = {
+  APPLICATION_NAME: 'EXPENSE-MATE',
   REGISTER_URL: `${environment.BACKEND_BASE_URL}/auth/register`,
   LOGIN_URL: `${environment.BACKEND_BASE_URL}/auth/login`,
 
