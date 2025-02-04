@@ -26,3 +26,8 @@ ADDING BOOTSTRAP
 ADDING ENVIRONTMENT FILES
 -------------------------
 ng generate environments
+
+==============================================================================================================
+ADDING JWT DECODER
+-------------------------
+npm install jwt-decode

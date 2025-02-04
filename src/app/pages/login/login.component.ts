@@ -42,6 +42,7 @@ export class LoginComponent {
         if (token) {
           this.loginAndRegisterService.saveToken(token);
           this.loginAndRegisterService.saveUserDetails(response.body);
+          this.loginAndRegisterService.startSessionTimeoutTimer();
         }
       },
       error: (error) => {
