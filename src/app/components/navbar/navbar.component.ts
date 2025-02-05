@@ -5,6 +5,8 @@ import { Router, RouterModule } from '@angular/router';
 import { UserDto } from '../../dtos/UserDto';
 import { UpperCasePipe } from '@angular/common';
 import { Subscription } from 'rxjs';
+import { UtilityComponentsService } from '../../services/utility-components.service';
+import { CUSTOM_CONFIRM_DIALOG_DATA } from '../../helpers/custom-confirm-dialog-data';
 
 @Component({
   selector: 'app-navbar',
@@ -22,7 +24,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   constructor(
     private loginAndRegisterService: LoginAndRegisterService,
-    private router: Router
+    private router: Router,
+    private utilityComponentsService:UtilityComponentsService
   ) {}
 
   ngOnInit(): void {
@@ -38,7 +41,15 @@ export class NavbarComponent implements OnInit, OnDestroy {
     })
   }
 
-  handleLogout() {}
+  handleLogout(){
+    const matDialogRef = this.utilityComponentsService.openConfirmDialog(CUSTOM_CONFIRM_DIALOG_DATA.PERFORM_MANUAL_LOGOUT);
+    matDialogRef.afterClosed().subscribe((result)=>{
+      console.log(CUSTOM_CONFIRM_DIALOG_DATA.PERFORM_MANUAL_LOGOUT.text,result)
+      if(result){
+        console.log("!! Perform Logout !!")
+      }
+    })
+  }
 
   getFormattedTime(timeInMilliSeconds:number){
     const hours = Math.floor((timeInMilliSeconds / (1000 * 60 * 60)) % 24);
