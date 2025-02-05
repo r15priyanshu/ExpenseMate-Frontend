@@ -3,6 +3,8 @@ import { LoginAndRegisterService } from '../../services/login-and-register.servi
 import { FormsModule, NgForm } from '@angular/forms';
 import { LoginRequestDto } from '../../dtos/LoginRequestDto';
 import { GlobalConstants } from '../../constants/global-constants';
+import { UtilityComponentsService } from '../../services/utility-components.service';
+import { CUSTOM_SNACK_BAR_DATA } from '../../components/utilities/custom-snackbar/CustomSnackbarData';
 
 @Component({
   selector: 'app-login',
@@ -23,7 +25,10 @@ export class LoginComponent {
     password: '',
   };
 
-  constructor(private loginAndRegisterService: LoginAndRegisterService) {}
+  constructor(
+    private loginAndRegisterService: LoginAndRegisterService,
+    private utilityComponentsService: UtilityComponentsService
+  ) {}
 
   handleLogin(loginForm: NgForm) {
     if (loginForm.invalid) {
@@ -43,6 +48,7 @@ export class LoginComponent {
           this.loginAndRegisterService.saveToken(token);
           this.loginAndRegisterService.saveUserDetails(response.body);
           this.loginAndRegisterService.startSessionTimeoutTimer();
+          this.utilityComponentsService.openCustomSnackBar(CUSTOM_SNACK_BAR_DATA.LOGIN_SUCCESS_SB_DATA)
         }
       },
       error: (error) => {
