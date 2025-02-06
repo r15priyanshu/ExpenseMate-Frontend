@@ -33,10 +33,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.userLoggedInSubscription = this.loginAndRegisterService.userLoggedInSubject.subscribe((value) => {
         this.userDetails = this.loginAndRegisterService.getLoggedInUserDetails();
         this.isLoggedIn = value;
-        console.log(`Inside ngOnInit of NavbarComponent: Consuming : isLoggedIn = ${this.isLoggedIn}`);
+        console.log(`Inside ngOnInit of NavbarComponent: Consuming : isLoggedIn : Value = ${this.isLoggedIn}`);
     });
    
-    this.sessionRemainingTimeSubscription = this.loginAndRegisterService.sessionRemainingTimeSubject.subscribe((remainingTime)=>{
+    this.sessionRemainingTimeSubscription = this.loginAndRegisterService.sessionRemainingTimeDisplaySubject.subscribe((remainingTime)=>{
       this.formattedRemainingTime = this.getFormattedTime(remainingTime);
     })
   }
@@ -46,7 +46,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     matDialogRef.afterClosed().subscribe((result)=>{
       console.log(CUSTOM_CONFIRM_DIALOG_DATA.PERFORM_MANUAL_LOGOUT.text,result)
       if(result){
-        console.log("!! Perform Logout !!")
+        this.loginAndRegisterService.performLogout(true)
       }
     })
   }

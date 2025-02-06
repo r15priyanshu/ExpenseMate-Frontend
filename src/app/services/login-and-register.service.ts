@@ -6,18 +6,23 @@ import { BehaviorSubject, interval, Observable, Subscription } from 'rxjs';
 import { GlobalConstants } from '../constants/global-constants';
 import { LoginRequestDto } from '../dtos/LoginRequestDto';
 import { UtilityService } from './utility.service';
+import { Router } from '@angular/router';
+import { UtilityComponentsService } from './utility-components.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LoginAndRegisterService {
   public userLoggedInSubject: BehaviorSubject<boolean>;
-  public sessionRemainingTimeSubject = new BehaviorSubject<number>(0);
-  private sessionRemainingTimeIntervalSubscription!: Subscription;
+  public sessionRemainingTimeDisplaySubject = new BehaviorSubject<number>(0);
+  private sessionRemainingTimeDisplayIntervalSubscription!: Subscription;
+  private tokenExpirationSetTimout : any = undefined;
 
   constructor(
     private httpClient: HttpClient,
-    private utilityService: UtilityService
+    private utilityService: UtilityService,
+    private utilityComponentsService:UtilityComponentsService,
+    private router:Router
   ) {
     this.userLoggedInSubject = new BehaviorSubject<boolean>(
       this.isUserLoggedIn()
@@ -38,7 +43,16 @@ export class LoginAndRegisterService {
     );
   }
 
-  public saveToken(token: string) {
+  public performOperationsOnLogin(token:string, userDto:UserDto){
+    this.saveToken(token);
+    this.saveUserDetails(userDto)
+    const tokenValidityInMilliseconds = this.getTokenValidityInMilliSeconds();
+    this.startSessionTimeoutDisplayTimer(tokenValidityInMilliseconds);
+    this.performAutoLogout(tokenValidityInMilliseconds);
+    this.userLoggedInSubject.next(true);
+  }
+
+  private saveToken(token: string) {
     this.utilityService.addItemInLocalStorage(
       GlobalConstants.JWT_TOKEN_KEY_FOR_LOCAL_STORAGE,
       token
@@ -52,7 +66,7 @@ export class LoginAndRegisterService {
     return token;
   }
 
-  public saveUserDetails(userDto: UserDto): boolean {
+  private saveUserDetails(userDto: UserDto): boolean {
     this.utilityService.addItemInLocalStorage(
       GlobalConstants.USER_DETAILS_KEY_FOR_LOCAL_STORAGE,
       JSON.stringify(userDto)
@@ -96,24 +110,47 @@ export class LoginAndRegisterService {
     }
   }
 
-  public startSessionTimeoutTimer() {
-    let tokenValidityInMilliseconds = this.getTokenValidityInMilliSeconds();
-    if(this.sessionRemainingTimeIntervalSubscription){
-      console.log("Resetting Session Timeout Timer Subscription !!")
-      this.sessionRemainingTimeIntervalSubscription.unsubscribe() 
+  private startSessionTimeoutDisplayTimer(tokenValidityInMilliseconds:number) {
+    let tokenValidity = tokenValidityInMilliseconds;
+    if(this.sessionRemainingTimeDisplayIntervalSubscription){
+      console.log("Resetting Session Timeout Display Timer Subscription !!")
+      this.sessionRemainingTimeDisplayIntervalSubscription.unsubscribe() 
     }
 
-    if (tokenValidityInMilliseconds > 0) {
-      console.log("Session Timout Timer Started !")
-      this.sessionRemainingTimeIntervalSubscription = interval(1000).subscribe(() => {
-          tokenValidityInMilliseconds = tokenValidityInMilliseconds - 1000;
-          if (tokenValidityInMilliseconds < 0) {
-            this.sessionRemainingTimeIntervalSubscription.unsubscribe();
+    if (tokenValidity > 0) {
+      console.log("Session Timout Display Timer Started !")
+      this.sessionRemainingTimeDisplayIntervalSubscription = interval(1000).subscribe(() => {
+          tokenValidity = tokenValidity - 1000;
+          if (tokenValidity < 0) {
+            this.sessionRemainingTimeDisplayIntervalSubscription.unsubscribe();
           }else{
-            this.sessionRemainingTimeSubject.next(tokenValidityInMilliseconds);
+            this.sessionRemainingTimeDisplaySubject.next(tokenValidity);
           }
         }
       );
     }
+  }
+
+  public performLogout(isManualLogout:boolean): void {
+    this.performOperationsOnLogout();
+    this.router.navigate(['/login'])
+    if(isManualLogout){
+      console.log("Manual Logout Successful !!")
+    }else{
+      console.log("Auto Logout Successful !!")
+    }
+  }
+
+  public performAutoLogout(expirationTimeInMilliSeconds:number): void {
+    console.log("Performing Auto Logout After : ",expirationTimeInMilliSeconds," ms.")
+    this.tokenExpirationSetTimout = setTimeout(()=>{
+      this.performLogout(false);
+    },expirationTimeInMilliSeconds);
+  }
+
+  private performOperationsOnLogout():void{
+    localStorage.removeItem(GlobalConstants.JWT_TOKEN_KEY_FOR_LOCAL_STORAGE);
+    localStorage.removeItem(GlobalConstants.USER_DETAILS_KEY_FOR_LOCAL_STORAGE);
+    this.userLoggedInSubject.next(false)
   }
 }

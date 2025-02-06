@@ -40,14 +40,9 @@ export class LoginComponent {
 
     this.loginAndRegisterService.performLogin(loginRequestDto).subscribe({
       next: (response) => {
-        console.log(response);
-        const token = response.headers.get(
-          GlobalConstants.JWT_TOKEN_HEADER_KEY
-        );
+        const token = response.headers.get(GlobalConstants.JWT_TOKEN_HEADER_KEY);
         if (token) {
-          this.loginAndRegisterService.saveToken(token);
-          this.loginAndRegisterService.saveUserDetails(response.body);
-          this.loginAndRegisterService.startSessionTimeoutTimer();
+          this.loginAndRegisterService.performOperationsOnLogin(token,response.body)
           this.utilityComponentsService.openCustomSnackBar(CUSTOM_SNACK_BAR_DATA.LOGIN_SUCCESS_SB_DATA)
         }
       },
