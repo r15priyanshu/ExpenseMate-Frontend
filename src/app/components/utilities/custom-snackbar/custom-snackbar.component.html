@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between align-items-center">
-    <p class="mb-0">{{data.message}}</p>
+    <p class="m-2">{{data.message}}</p>
     @if (data.dismissSnackBarButtonText) {
     <button class="btn btn-sm" [ngClass]="getButtonClass()" (click)="dismissSnackBar()">{{data.dismissSnackBarButtonText}}</button>
     }

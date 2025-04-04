@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar, MatSnackBarRef } from '@angular/material/snack-bar';
-import { CustomSnackbarData } from '../components/utilities/custom-snackbar/CustomSnackbarData';
+import { CustomSnackbarData } from '../helpers/custom-snackbar-data';
 import { CustomSnackbarComponent } from '../components/utilities/custom-snackbar/custom-snackbar.component';
 import { CustomConfirmDialogData } from '../helpers/custom-confirm-dialog-data';
 import { CustomConfirmDialogComponent } from '../components/utilities/custom-confirm-dialog/custom-confirm-dialog.component';

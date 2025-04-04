@@ -3,7 +3,7 @@ import {
   MAT_SNACK_BAR_DATA,
   MatSnackBarRef,
 } from '@angular/material/snack-bar';
-import { CustomSnackbarData, SNACK_BAR_DEFAULTS } from './CustomSnackbarData';
+import { CustomSnackbarData, SNACK_BAR_DEFAULTS } from '../../../helpers/custom-snackbar-data';
 import { Subject } from 'rxjs';
 import { CommonModule } from '@angular/common';
 
