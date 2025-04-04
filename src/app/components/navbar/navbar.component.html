@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light pt-3 pb-3">
     <div class="container-fluid">
-        <a class="navbar-brand" routerLink="/home">{{navBarHeadingName}}</a>
+        <a class="navbar-brand" routerLink="/home">{{navbarHeadingName}}</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -19,20 +19,20 @@
                     <a class="nav-link" routerLink="/about/demo" routerLinkActive="custom-active-link"
                         [routerLinkActiveOptions]="{exact:true}">DEMO</a>
                 </li>
-                @if(isLoggedIn){
+                @if(isUserLoggedIn){
                 <li class="nav-item">
                     <a class="nav-link" routerLink="/dashboard" routerLinkActive="custom-active-link"
                         [routerLinkActiveOptions]="{exact:false}">DASHBOARD</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" routerLink="/profile" routerLinkActive="custom-active-link"
-                        [routerLinkActiveOptions]="{exact:true}">{{userDetails?.firstName | uppercase}}</a>
+                        [routerLinkActiveOptions]="{exact:true}">{{loggedInUserDetails?.firstName | uppercase}}</a>
                 </li>
                 }
 
             </ul>
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                @if(isLoggedIn){
+                @if(isUserLoggedIn){
                 <li class="nav-item">
                     <a class="nav-link">TIMEOUT IN (HH:MM:SS) - {{formattedRemainingTime}}</a>
                 </li>
@@ -43,11 +43,11 @@
                         ACTIONS
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        @if (!isLoggedIn) {
+                        @if (!isUserLoggedIn) {
                         <li><a class="dropdown-item" routerLink="/login">Login</a></li>
                         <li><a class="dropdown-item" routerLink="/register">Register</a></li>
                         }
-                        @if(isLoggedIn){
+                        @if(isUserLoggedIn){
                         <li><a class="dropdown-item" (click)="handleLogout()">Logout</a></li>
                         }
                     </ul>

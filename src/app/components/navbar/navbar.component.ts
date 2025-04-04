@@ -15,12 +15,12 @@ import { CUSTOM_CONFIRM_DIALOG_DATA } from '../../helpers/custom-confirm-dialog-
   styleUrl: './navbar.component.scss',
 })
 export class NavbarComponent implements OnInit, OnDestroy {
-  public navBarHeadingName: string = GlobalConstants.APPLICATION_NAME;
-  public isLoggedIn: boolean = false;
-  public userDetails: UserDto | null = null;
+  public navbarHeadingName: string = GlobalConstants.APPLICATION_NAME;
+  public isUserLoggedIn: boolean = false;
+  public loggedInUserDetails: UserDto | null = null;
   public formattedRemainingTime: string = '';
-  private userLoggedInSubscription!: Subscription;
-  private sessionRemainingTimeSubscription!: Subscription;
+  private authDetailsSubscription!: Subscription;
+  private sessionRemainingTimeBehaviourSubjectSubscription!: Subscription;
 
   constructor(
     private loginAndRegisterService: LoginAndRegisterService,
@@ -29,15 +29,16 @@ export class NavbarComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    console.log('Inside ngOnInit of NavbarComponent.');
-    this.userLoggedInSubscription = this.loginAndRegisterService.userLoggedInSubject.subscribe((value) => {
-        this.userDetails = this.loginAndRegisterService.getLoggedInUserDetails();
-        this.isLoggedIn = value;
-        console.log(`Inside ngOnInit of NavbarComponent: Consuming : isLoggedIn : Value = ${this.isLoggedIn}`);
+    console.log('Inside ngOnInit Of NavbarComponent.');
+    this.authDetailsSubscription = this.loginAndRegisterService.AuthDetailsBehaviourSubject.subscribe((value) => {
+        this.isUserLoggedIn = value.isUserLoggedIn;
+        this.loggedInUserDetails = value.loggedInUserDetails;
+        console.log(`Inside ngOnInit Of NavbarComponent: Consuming : isUserLoggedIn : Value = ${this.isUserLoggedIn}`);
     });
    
-    this.sessionRemainingTimeSubscription = this.loginAndRegisterService.sessionRemainingTimeDisplaySubject.subscribe((remainingTime)=>{
+    this.sessionRemainingTimeBehaviourSubjectSubscription = this.loginAndRegisterService.sessionRemainingTimeDisplayBehaviourSubject.asObservable().subscribe((remainingTime)=>{
       this.formattedRemainingTime = this.getFormattedTime(remainingTime);
+      //console.log(`Received Remaining Time In Navbar : ${this.formattedRemainingTime}`)
     })
   }
 
@@ -59,7 +60,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.userLoggedInSubscription.unsubscribe();
-    this.sessionRemainingTimeSubscription.unsubscribe();
+    this.authDetailsSubscription.unsubscribe();
+    this.sessionRemainingTimeBehaviourSubjectSubscription.unsubscribe();
   }
 }

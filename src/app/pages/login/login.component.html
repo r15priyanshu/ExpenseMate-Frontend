@@ -24,7 +24,7 @@
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
                     <input type="password" class="form-control rounded-5" id="password" aria-describedby="password"
-                        name="password" [(ngModel)]="loginData.password" #password="ngModel" required minlength="5"
+                        name="password" autocomplete="off" [(ngModel)]="loginData.password" #password="ngModel" required minlength="5"
                         [class.is-invalid]="password.touched && password.invalid">
                     @if(password.touched && password.invalid){
                     <div class="form-text text-danger">

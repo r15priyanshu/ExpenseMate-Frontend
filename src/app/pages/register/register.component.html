@@ -50,8 +50,8 @@
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
                     <div class="input-group">
-                        <input [type]="isPasswordHidden() ? 'password' : 'text'" class="form-control" id="password" aria-describedby="password"
-                            formControlName="password"
+                        <input [type]="isPasswordHidden() ? 'password' : 'text'" class="form-control" id="password"
+                            autocomplete="off" aria-describedby="password" formControlName="password"
                             [class.is-invalid]="controls['password'].touched && controls['password'].invalid">
                         <span class="input-group-text" (click)="toggleVisibility()">
                             <mat-icon>{{isPasswordHidden() ? 'visibility_off' : 'visibility'}}</mat-icon>
@@ -73,8 +73,8 @@
 
                 <div class="mb-3">
                     <label for="confirmPassword" class="form-label">Confirm Password</label>
-                    <input type="password" class="form-control" id="confirmPassword" aria-describedby="confirmPassword"
-                        formControlName="confirmPassword"
+                    <input type="password" class="form-control" id="confirmPassword" autocomplete="off"
+                        aria-describedby="confirmPassword" formControlName="confirmPassword"
                         [class.is-invalid]="controls['confirmPassword'].touched && controls['confirmPassword'].invalid">
                     @if(controls['confirmPassword'].touched && controls['confirmPassword'].invalid){
                     <div class="form-text text-danger">

@@ -9,24 +9,28 @@ import { UtilityService } from './utility.service';
 import { Router } from '@angular/router';
 import { UtilityComponentsService } from './utility-components.service';
 
+interface AuthDetails {
+  isUserLoggedIn: boolean;
+  loggedInUserDetails: UserDto | null;
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class LoginAndRegisterService {
-  public userLoggedInSubject: BehaviorSubject<boolean>;
-  public sessionRemainingTimeDisplaySubject = new BehaviorSubject<number>(0);
+  public AuthDetailsBehaviourSubject: BehaviorSubject<AuthDetails>;
+  public sessionRemainingTimeDisplayBehaviourSubject = new BehaviorSubject<number>(0);
   private sessionRemainingTimeDisplayIntervalSubscription!: Subscription;
-  private tokenExpirationSetTimout : any = undefined;
+  private tokenExpirationSetTimout: any = undefined;
 
   constructor(
     private httpClient: HttpClient,
     private utilityService: UtilityService,
-    private utilityComponentsService:UtilityComponentsService,
-    private router:Router
+    private utilityComponentsService: UtilityComponentsService,
+    private router: Router
   ) {
-    this.userLoggedInSubject = new BehaviorSubject<boolean>(
-      this.isUserLoggedIn()
-    );
+    console.log("Inside Constructor Of LoginAndRegisterService !!")
+    this.AuthDetailsBehaviourSubject = new BehaviorSubject<AuthDetails>({isUserLoggedIn: this.isUserLoggedIn(),loggedInUserDetails: this.getLoggedInUserDetails()});
   }
 
   registerUser(userDto: UserDto): Observable<UserDto> {
@@ -43,13 +47,25 @@ export class LoginAndRegisterService {
     );
   }
 
-  public performOperationsOnLogin(token:string, userDto:UserDto){
+  public performOperationsOnLogin(token: string, userDto: UserDto) {
+    //SAVE TOKEN AND USER DETAILS
     this.saveToken(token);
-    this.saveUserDetails(userDto)
+    this.saveUserDetails(userDto);
+
+    //SETUP DISPLAY TIME FOR NAVBAR AND SETUP AUTO-LOGOUT.
     const tokenValidityInMilliseconds = this.getTokenValidityInMilliSeconds();
     this.startSessionTimeoutDisplayTimer(tokenValidityInMilliseconds);
     this.performAutoLogout(tokenValidityInMilliseconds);
-    this.userLoggedInSubject.next(true);
+
+    //FINALLY UPDATING THAT LOGIN IS SUCCESSFUL.
+    this.AuthDetailsBehaviourSubject.next({isUserLoggedIn: true,loggedInUserDetails: userDto});
+  }
+
+  public performOperationsOnApplicationRefresh() {
+    //SETUP DISPLAY TIME FOR NAVBAR AND SETUP AUTO-LOGOUT.
+    const tokenValidityInMilliseconds = this.getTokenValidityInMilliSeconds();
+    this.startSessionTimeoutDisplayTimer(tokenValidityInMilliseconds);
+    this.performAutoLogout(tokenValidityInMilliseconds);
   }
 
   private saveToken(token: string) {
@@ -110,47 +126,47 @@ export class LoginAndRegisterService {
     }
   }
 
-  private startSessionTimeoutDisplayTimer(tokenValidityInMilliseconds:number) {
+  private startSessionTimeoutDisplayTimer(tokenValidityInMilliseconds: number) {
     let tokenValidity = tokenValidityInMilliseconds;
-    if(this.sessionRemainingTimeDisplayIntervalSubscription){
-      console.log("Resetting Session Timeout Display Timer Subscription !!")
-      this.sessionRemainingTimeDisplayIntervalSubscription.unsubscribe() 
+    if (this.sessionRemainingTimeDisplayIntervalSubscription) {
+      console.log('Resetting Session Timeout Display Timer Subscription !!');
+      this.sessionRemainingTimeDisplayIntervalSubscription.unsubscribe();
     }
 
     if (tokenValidity > 0) {
-      console.log("Session Timout Display Timer Started !")
+      console.log('Session Timout Display Timer Started !!');
       this.sessionRemainingTimeDisplayIntervalSubscription = interval(1000).subscribe(() => {
-          tokenValidity = tokenValidity - 1000;
-          if (tokenValidity < 0) {
-            this.sessionRemainingTimeDisplayIntervalSubscription.unsubscribe();
-          }else{
-            this.sessionRemainingTimeDisplaySubject.next(tokenValidity);
-          }
+        tokenValidity = tokenValidity - 1000;
+        if (tokenValidity < 0) {
+          this.sessionRemainingTimeDisplayIntervalSubscription.unsubscribe();
+        } else {
+          this.sessionRemainingTimeDisplayBehaviourSubject.next(tokenValidity);
         }
-      );
+      });
     }
   }
 
-  public performLogout(isManualLogout:boolean): void {
+  public performLogout(isManualLogout: boolean): void {
     this.performOperationsOnLogout();
-    this.router.navigate(['/login'])
-    if(isManualLogout){
-      console.log("Manual Logout Successful !!")
-    }else{
-      console.log("Auto Logout Successful !!")
+    this.router.navigate(['/login']);
+    if (isManualLogout) {
+      console.log('Manual Logout Successful !!');
+    } else {
+      console.log('Auto Logout Successful !!');
     }
   }
 
-  public performAutoLogout(expirationTimeInMilliSeconds:number): void {
-    console.log("Performing Auto Logout After : ",expirationTimeInMilliSeconds," ms.")
-    this.tokenExpirationSetTimout = setTimeout(()=>{
+  public performAutoLogout(expirationTimeInMilliSeconds: number): void {
+    console.log(`Performing Auto Logout After : ${expirationTimeInMilliSeconds} ms.`);
+    this.tokenExpirationSetTimout = setTimeout(() => {
       this.performLogout(false);
-    },expirationTimeInMilliSeconds);
+    }, expirationTimeInMilliSeconds);
   }
 
-  private performOperationsOnLogout():void{
+  private performOperationsOnLogout(): void {
     localStorage.removeItem(GlobalConstants.JWT_TOKEN_KEY_FOR_LOCAL_STORAGE);
     localStorage.removeItem(GlobalConstants.USER_DETAILS_KEY_FOR_LOCAL_STORAGE);
-    this.userLoggedInSubject.next(false)
+    this.sessionRemainingTimeDisplayIntervalSubscription.unsubscribe();
+    this.AuthDetailsBehaviourSubject.next({isUserLoggedIn: false,loggedInUserDetails: null});
   }
 }

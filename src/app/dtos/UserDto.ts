@@ -1,11 +1,12 @@
 import { RoleDto } from './RoleDto';
 
 export class UserDto {
-  public employeeId?: number;
+  public userId?: string;
   public firstName: string;
   public lastName: string;
   public email: string;
   public password: string;
+  public profilePic?: string;
   public role?: RoleDto;
 
   constructor(

@@ -5,6 +5,7 @@ import { LoginRequestDto } from '../../dtos/LoginRequestDto';
 import { GlobalConstants } from '../../constants/global-constants';
 import { UtilityComponentsService } from '../../services/utility-components.service';
 import { CUSTOM_SNACK_BAR_DATA } from '../../components/utilities/custom-snackbar/CustomSnackbarData';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -26,6 +27,7 @@ export class LoginComponent {
   };
 
   constructor(
+    private router:Router,
     private loginAndRegisterService: LoginAndRegisterService,
     private utilityComponentsService: UtilityComponentsService
   ) {}
@@ -44,6 +46,7 @@ export class LoginComponent {
         if (token) {
           this.loginAndRegisterService.performOperationsOnLogin(token,response.body)
           this.utilityComponentsService.openCustomSnackBar(CUSTOM_SNACK_BAR_DATA.LOGIN_SUCCESS_SB_DATA)
+          this.router.navigate(["/profile"])
         }
       },
       error: (error) => {
