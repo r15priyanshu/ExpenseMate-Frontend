@@ -33,6 +33,7 @@ export class LoginComponent {
   ) {}
 
   handleLogin(loginForm: NgForm) {
+    console.log("Trying To Login User...")
     if (loginForm.invalid) {
       this.utilityComponentsService.openCustomSnackBar(CUSTOM_LOGIN_SNACK_BAR_DATA.LOGIN_INPUT_VALIDATION_FAILED)
       return;
@@ -56,7 +57,7 @@ export class LoginComponent {
         } else if (error.status === 404) {
           this.utilityComponentsService.openCustomSnackBar(CUSTOM_LOGIN_SNACK_BAR_DATA.LOGIN_ERROR_USER_NOT_FOUND);
         } else {
-          this.utilityComponentsService.openCustomSnackBar(CUSTOM_LOGIN_SNACK_BAR_DATA.LOGIN_ERROR_GENERIC_ERROR);
+          this.utilityComponentsService.openCustomSnackBar(CUSTOM_LOGIN_SNACK_BAR_DATA.LOGIN_ERROR_GENERIC_MESSAGE);
         }
       },
     });

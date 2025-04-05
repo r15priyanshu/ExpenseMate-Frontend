@@ -1,0 +1,76 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="text-center">
+                        <h4>PROFILE DETAILS</h4>
+                        <img [src]="profilePicLocation" alt="profile-pic" height="150" width="150"
+                            class="rounded-circle">
+                        <br>
+                        <button class="btn btn-sm btn-info mt-2" (click)="handleProfilePictureRemove()"
+                            [disabled]="loggedInUserDetails?.profilePic===defaultProfilePicImageName">Remove</button>
+                    </div>
+                    <div class="mt-4">
+                        <form [formGroup]="userProfileFormGroup" (ngSubmit)="handleUpdate()">
+                            <div class="mb-3">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="firstName" class="form-label">First Name</label>
+                                        <input type="text" class="form-control" id="firstName"
+                                            aria-describedby="firstName" formControlName="firstName"
+                                            [class.is-invalid]="controls['firstName'].touched && controls['firstName'].invalid">
+                                        @if(controls['firstName'].touched && controls['firstName'].invalid){
+                                        <div class="form-text text-danger">
+                                            @if(controls['firstName'].hasError('required')){
+                                            <div>This is mandatory field !!</div>
+                                            }
+                                            @if(controls['firstName'].hasError('minlength')){
+                                            <div>Minimum Length Required : 3 !!</div>
+                                            }
+                                        </div>
+                                        }
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="lastName" class="form-label">Last Name</label>
+                                        <input type="text" class="form-control" id="lastName"
+                                            aria-describedby="lastName" formControlName="lastName">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email Address</label>
+                                <input type="text" class="form-control" id="email" aria-describedby="email"
+                                    formControlName="email"
+                                    [class.is-invalid]="controls['email'].touched && controls['email'].invalid">
+                                @if(controls['email'].touched && controls['email'].invalid){
+                                <div class="form-text text-danger">
+                                    @if(controls['email'].hasError('required')){
+                                    <div>This is mandatory field !!</div>
+                                    }
+                                    @if(controls['email'].hasError('minlength')){
+                                    <div>Minimum Length Required : 5 !!</div>
+                                    }
+                                </div>
+                                }
+                            </div>
+
+                            <div class="text-center">
+                                <button class="btn btn-primary btn-sm m-1" type="submit">Update Profile</button>
+                            </div>
+
+                        </form>
+                        <div class="mt-2">
+                            <input type="file" class="form-control" id="fileInput" #fileInput
+                                (change)="handleOnFileChange($event)">
+                            <div class="text-center">
+                                <button class="btn btn-sm btn-info mt-2" (click)="handleProfilePictureUpload()"
+                                    [disabled]="!selectedFile">Change Profile Picture</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

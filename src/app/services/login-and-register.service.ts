@@ -7,7 +7,6 @@ import { GlobalConstants } from '../constants/global-constants';
 import { LoginRequestDto } from '../dtos/LoginRequestDto';
 import { UtilityService } from './utility.service';
 import { Router } from '@angular/router';
-import { UtilityComponentsService } from './utility-components.service';
 
 interface AuthDetails {
   isUserLoggedIn: boolean;
@@ -26,7 +25,6 @@ export class LoginAndRegisterService {
   constructor(
     private httpClient: HttpClient,
     private utilityService: UtilityService,
-    private utilityComponentsService: UtilityComponentsService,
     private router: Router
   ) {
     console.log("Inside Constructor Of LoginAndRegisterService !!")
@@ -66,6 +64,11 @@ export class LoginAndRegisterService {
     const tokenValidityInMilliseconds = this.getTokenValidityInMilliSeconds();
     this.startSessionTimeoutDisplayTimer(tokenValidityInMilliseconds);
     this.performAutoLogout(tokenValidityInMilliseconds);
+  }
+
+  public performOperationsAfterProfileUpdate(user: UserDto) {
+    this.saveUserDetails(user)
+    this.AuthDetailsBehaviourSubject.next({isUserLoggedIn: true,loggedInUserDetails: user})
   }
 
   private saveToken(token: string) {
