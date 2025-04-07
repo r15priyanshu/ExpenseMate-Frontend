@@ -2,6 +2,9 @@ import { environment } from '../../environments/environment';
 
 export const GlobalConstants = {
   APPLICATION_NAME: 'EXPENSE-MATE',
+  ADMIN_ROLE_NAME : 'ROLE_ADMIN',
+  NORMAL_ROLE_NAME : 'ROLE_NORMAL',
+  
   DEFAULT_PROFILE_PIC_IMAGE_NAME: 'default.png',
   DEFAULT_PROFILE_PIC_IMAGE_LOCATION: 'images/default.png',
   DEFAULT_PROFILE_PIC_IMAGE_FORM_FIELD_NAME: 'image',
