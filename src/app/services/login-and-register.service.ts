@@ -35,14 +35,8 @@ export class LoginAndRegisterService {
     return this.httpClient.post<UserDto>(GlobalConstants.REGISTER_URL, userDto);
   }
 
-  public performLogin(
-    loginRequestDto: LoginRequestDto
-  ): Observable<HttpResponse<any>> {
-    return this.httpClient.post<HttpResponse<any>>(
-      GlobalConstants.LOGIN_URL,
-      loginRequestDto,
-      { observe: 'response' }
-    );
+  public performLogin(loginRequestDto: LoginRequestDto): Observable<HttpResponse<any>> {
+    return this.httpClient.post<HttpResponse<any>>(GlobalConstants.LOGIN_URL,loginRequestDto,{ observe: 'response' });
   }
 
   public performOperationsOnLogin(token: string, userDto: UserDto) {

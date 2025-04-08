@@ -15,6 +15,7 @@ export const GlobalConstants = {
   UPDATE_PROFILE_PICTURE_BY_USERID_URL : (userId:string) => { return `${environment.BACKEND_BASE_URL}/users/updateProfilePicture/${userId}` },
   REMOVE_PROFILE_PICTURE_BY_USERID_URL : (userId:string) => { return `${environment.BACKEND_BASE_URL}/users/removeProfilePicture/${userId}` },
   GET_PROFILE_PICTURE_BY_USERID_URL : (userId:string) => { return `${environment.BACKEND_BASE_URL}/public/images/serveProfilePicture/users/${userId}` },
+  GET_CATEGORIES_BY_USERID_URL : (userId:string) => { return `${environment.BACKEND_BASE_URL}/categories/users/${userId}` },
  
   USER_DETAILS_KEY_FOR_LOCAL_STORAGE: 'USER-DETAILS',
 
