@@ -1,4 +1,6 @@
+import { BookDto } from './BookDto';
 import { RoleDto } from './RoleDto';
+import { TransactionDto } from './TransactionDto';
 
 export class UserDto {
   public userId?: string;
@@ -8,6 +10,8 @@ export class UserDto {
   public password: string;
   public profilePic?: string;
   public role?: RoleDto;
+  public transactions?: TransactionDto;
+  public books?: BookDto;
 
   constructor(
     firstName: string,

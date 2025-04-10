@@ -12,11 +12,10 @@ export class CategoryService {
   public categoryListBehaviourSubject = new BehaviorSubject<CategoryDto[]>([]);
 
   constructor(
-    private http: HttpClient,
-    private loginAndRegisterService: LoginAndRegisterService
-  ) {
+    private http: HttpClient, 
+    private loginAndRegisterService: LoginAndRegisterService) {
     console.log("Inside Constructor Of CategoryService !!")
-    //WHENEVER USER-DETAILS CHANGES , WILL UPDATE THE CATEGORIES LIST.
+    //WHENEVER USER-DETAILS CHANGES , WILL UPDATE THE CATEGORIES LIST, WILL WORK ON PAGE REFRESH ALSO.
     loginAndRegisterService.AuthDetailsBehaviourSubject.asObservable().subscribe(
       () => {
         console.log("Auth Details Changed !! Updating Categories !!")
