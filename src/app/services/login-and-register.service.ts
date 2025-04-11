@@ -87,7 +87,7 @@ export class LoginAndRegisterService {
     return true;
   }
 
-  public getLoggedInUserDetails(): UserDto | null {
+  private getLoggedInUserDetails(): UserDto | null {
     const details = this.utilityService.getItemFromLocalStorage(
       GlobalConstants.USER_DETAILS_KEY_FOR_LOCAL_STORAGE
     );

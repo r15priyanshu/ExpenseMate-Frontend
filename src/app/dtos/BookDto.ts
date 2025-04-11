@@ -3,5 +3,6 @@ export interface BookDto {
   bookName: string;
   bookDescription: string;
   bookOwner: string;
+  primary: boolean,
   createdAt: Date;
 }

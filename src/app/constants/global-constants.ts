@@ -17,6 +17,7 @@ export const GlobalConstants = {
   GET_PROFILE_PICTURE_BY_USERID_URL : (userId:string) => { return `${environment.BACKEND_BASE_URL}/public/images/serveProfilePicture/users/${userId}` },
   GET_CATEGORIES_BY_USERID_URL : (userId:string) => { return `${environment.BACKEND_BASE_URL}/categories/users/${userId}` },
   GET_BOOKS_BY_USERID_URL : (userId:string) => { return `${environment.BACKEND_BASE_URL}/books/users/${userId}` },
+  GET_SPECIFIC_MONTH_TRANSACTIONS_OF_USER_BY_USERID_FOR_SPECIFIC_BOOK_URL : (bookId: string, userId: string, year: number, month: number) => { return `${environment.BACKEND_BASE_URL}/transactions/books/${bookId}/users/${userId}/year/${year}/month/${month}` },
 
   USER_DETAILS_KEY_FOR_LOCAL_STORAGE: 'USER-DETAILS',
 
