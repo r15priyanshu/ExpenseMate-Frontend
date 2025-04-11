@@ -3,28 +3,36 @@
         <div class="col-md-12">
             <div>
                 <h5 class="text-center">MANAGE TRANSACTIONS</h5>
+
                 <div class="text-center">
+                    @if(books.length === 0){
+                    <div class="alert alert-warning" role="alert">
+                        !! 😅 Please Create An Expense Book First To Get Started 😅 !!
+                    </div>
+                    }@else{
                     <h6>SELECT BOOK</h6>
                     <div>
                         @for (book of books; track book.bookId; let i = $index) {
                         <input type="radio" class="btn-check" name="book" [id]="'book' + book.bookId"
-                            [value]="book.bookId" [(ngModel)]="selectedBookId" (change)="handleBookChange()"  autocomplete="off" />
+                            [value]="book.bookId" [(ngModel)]="selectedBookId" (change)="handleBookChange()"
+                            autocomplete="off" />
                         <label class="btn btn-outline-success m-1" [for]="'book' + book.bookId">
                             {{ book.bookName.toUpperCase() }}
                         </label>
                         }
                     </div>
+                    }
                 </div>
 
                 <div>
                     <table class="table table-borderless text-center w-auto mx-auto">
                         <tbody>
                             <tr style="font-size: 1rem;">
-                                <td class="align-middle">Rs {{ transactionDetails?.totalCredit }}</td>
+                                <td class="align-middle">₹ {{ transactionDetailsResponse?.totalCredit }}</td>
                                 <td class="align-middle" rowspan="2">-</td>
-                                <td class="align-middle">Rs {{ transactionDetails?.totalDebit }}</td>
+                                <td class="align-middle">₹ {{ transactionDetailsResponse?.totalDebit }}</td>
                                 <td class="align-middle" rowspan="2">=</td>
-                                <td class="align-middle">Rs {{ transactionDetails?.total }}</td>
+                                <td class="align-middle">₹ {{ transactionDetailsResponse?.total }}</td>
                             </tr>
                             <tr style="font-size: 0.7rem;">
                                 <td>CREDIT</td>
@@ -36,10 +44,68 @@
                 </div>
 
                 <div class="text-center">
-                    <button class="btn btn-lg btn-warning" (click)="handleMonthAndYearChange(-1)">PREV</button>
-                    <button class="btn btn-lg btn-warning m-3 m-3" style="min-width: 150px;">{{currentMonthName}} |
+                    <button class="btn btn-warning" (click)="handleMonthAndYearChange(-1)">PREV</button>
+                    <button class="btn btn-warning m-3 m-3" style="min-width: 150px;">{{currentMonthName}} |
                         {{currentYear}}</button>
-                    <button class="btn btn-lg btn-warning" (click)="handleMonthAndYearChange(1)">NEXT</button>
+                    <button class="btn btn-warning" (click)="handleMonthAndYearChange(1)" [disabled]="this.selectedDate().getMonth() === today.getMonth()">NEXT</button>
+                </div>
+
+                <div>
+                    @if (this.groupedTransactions && this.groupedTransactions.length > 0){
+                        <div class="alert alert-warning text-center mt-3">
+                            <h5>TRANSACTION DETAILS</h5>
+                        </div>
+                    }
+                    <div class="table-responsive">
+                        @if (this.groupedTransactions && this.groupedTransactions.length > 0) {
+                        <table class="table table-bordered">
+                            <thead class="text-center">
+                                <tr>
+                                    <th>DATE</th>
+                                    <th>DESCRIPTION</th>
+                                    <th>CATEGORY</th>
+                                    <th>AMOUNT</th>
+                                    <th>TYPE</th>
+                                    <th>ACTIONS</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (group of this.groupedTransactions; track group.transactionDate) {
+                                @for (transaction of group.transactions; let i = $index; track
+                                transaction.transactionId) {
+                                <tr>
+                                    @if (i === 0) {
+                                    <td [attr.rowspan]="group.transactions.length">
+                                        📅 {{ group.transactionDate }}
+                                    </td>
+                                    }
+                                    <td>{{ transaction.transactionDescription }}</td>
+                                    <td class="text-center">{{ transaction.category?.categoryName }}</td>
+                                    <td class="text-end">₹ {{ transaction.transactionAmount }}</td>
+                                    <td class="text-center">{{transaction.transactionType}}
+                                    </td>
+                                    <td>
+                                        <div class="text-center">
+                                            <button class="btn btn-sm btn-success m-1">Edit</button>
+                                            <button class="btn btn-sm btn-danger m-1">Delete</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                }
+
+                                <!-- Empty Borderless Row And Column To Separate Groups -->
+                                <tr class="border-0">
+                                    <td colspan="6" class="p-3 border-0"></td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                        } @else {
+                        <div class="alert alert-warning text-center mt-3">
+                            <h5> NO TRANSACTIONS AVAILABLE</h5>
+                        </div>
+                        }
+                    </div>
                 </div>
             </div>
         </div>

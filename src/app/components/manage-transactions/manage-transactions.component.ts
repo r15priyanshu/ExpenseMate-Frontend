@@ -1,12 +1,11 @@
 import { Component, effect, signal } from '@angular/core';
-import { AddTransactionComponent } from '../add-transaction/add-transaction.component';
 import { BookDto } from '../../dtos/BookDto';
 import { BookService } from '../../services/book.service';
 import { CategoryService } from '../../services/category.service';
 import { FormsModule } from '@angular/forms';
 import { TransactionService } from '../../services/transaction.service';
 import { LoginAndRegisterService } from '../../services/login-and-register.service';
-import { TransactionDetailsResponseType } from '../../dtos/TransactionDetailsResponseType';
+import { GroupedTransactionType, TransactionDetailsResponseType } from '../../dtos/TransactionDetailsResponseType';
 
 @Component({
   selector: 'app-manage-transactions',
@@ -25,7 +24,8 @@ export class ManageTransactionsComponent {
   currentYear: number = 0;
 
   //TRANSACTIONS RELATED
-  transactionDetails?:TransactionDetailsResponseType;
+  transactionDetailsResponse?:TransactionDetailsResponseType;
+  groupedTransactions?:GroupedTransactionType[]
 
   constructor(private bookService:BookService, private categoryService:CategoryService, private transactionService:TransactionService, private loginAndRegisterService:LoginAndRegisterService){
     console.log("Inside Constructor Of ManageTransactionsComponent !!");
@@ -39,9 +39,10 @@ export class ManageTransactionsComponent {
 
   ngOnInit(): void {
     console.log("Inside NgOnInit Of ManageTransactionsComponent !!");
-    this.bookService.bookListBehaviourSubject.asObservable().subscribe(next=>{
+    this.bookService.bookListBehaviourSubject.asObservable().subscribe(receivedBooks=>{
+      this.books = receivedBooks
       //BY DEFAULT SELECTING THE PRIMARY BOOK.
-      const primaryBook = next.find(book => book.primary);
+      const primaryBook = this.books.find(book => book.primary);
       if (primaryBook) {
         this.selectedBookId = primaryBook.bookId;
         this.fetchTransactionsDetails();
@@ -69,12 +70,18 @@ export class ManageTransactionsComponent {
   }
 
   fetchTransactionsDetails(){
+    if(this.books.length === 0){
+      console.log("No Books Available !! Doing Nothing !!")
+      return;
+    }
+
     const year = this.selectedDate().getFullYear();
     const month = this.selectedDate().getMonth() + 1;
     const { loggedInUserDetails }= this.loginAndRegisterService.AuthDetailsBehaviourSubject.value
     this.transactionService.getSpecificMonthTransactionsOfUserByUserIdForSpecificBook(this.selectedBookId,loggedInUserDetails?.userId || '',year,month).subscribe({
       next:(response)=>{
-        this.transactionDetails = response
+        this.transactionDetailsResponse = response;
+        this.groupedTransactions = response.groupedTransactions;
       },error:(error)=>{
 
       }
