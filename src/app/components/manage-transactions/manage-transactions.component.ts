@@ -6,6 +6,8 @@ import { FormsModule } from '@angular/forms';
 import { TransactionService } from '../../services/transaction.service';
 import { LoginAndRegisterService } from '../../services/login-and-register.service';
 import { GroupedTransactionType, TransactionDetailsResponseType } from '../../dtos/TransactionDetailsResponseType';
+import { UtilityComponentsService } from '../../services/utility-components.service';
+import { CUSTOM_TRANSACTION_SNACK_BAR_DATA } from '../../helpers/custom-snackbar-data';
 
 @Component({
   selector: 'app-manage-transactions',
@@ -27,7 +29,12 @@ export class ManageTransactionsComponent {
   transactionDetailsResponse?:TransactionDetailsResponseType;
   groupedTransactions?:GroupedTransactionType[]
 
-  constructor(private bookService:BookService, private categoryService:CategoryService, private transactionService:TransactionService, private loginAndRegisterService:LoginAndRegisterService){
+  constructor(
+    private bookService:BookService,
+    private categoryService:CategoryService,
+    private transactionService:TransactionService,
+    private loginAndRegisterService:LoginAndRegisterService,
+    private utilityComponentsService:UtilityComponentsService){
     console.log("Inside Constructor Of ManageTransactionsComponent !!");
     effect(()=>{
       console.log("Inside Effect Of ManageTransactionsComponent !!");
@@ -86,6 +93,19 @@ export class ManageTransactionsComponent {
 
       }
     });
+  }
+
+  handleDeleteTransaction(transactionId:string | undefined){
+    if(transactionId){
+      this.transactionService.deleteTransactionByTransactionId(transactionId).subscribe({
+        next:(response)=>{
+          this.utilityComponentsService.openCustomSnackBar(CUSTOM_TRANSACTION_SNACK_BAR_DATA.TRANSACTION_DELETED_SUCCESSFULLY)
+          this.fetchTransactionsDetails();
+        },error:(error)=>{
+          
+        }
+      });
+    }
   }
 
   updateMonthAndYearForDisplay(): void {

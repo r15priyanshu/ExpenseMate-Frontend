@@ -75,7 +75,8 @@ export const CUSTOM_USER_PROFILE_SNACK_BAR_DATA: {
     snackbarType: SNACK_BAR_DEFAULTS.SB_TYPE_SUCCESS,
   },
   USER_PROFILE_UPDATION_FAILED: {
-    message:  '!! Something Went Wrong While Updating Profile Details !! Please Try After Some Time !!',
+    message:
+      '!! Something Went Wrong While Updating Profile Details !! Please Try After Some Time !!',
     performSomeActionButtonText: null,
     dismissSnackBarButtonText: SNACK_BAR_DEFAULTS.SB_DEFAULT_DISMISS_BTN_TXT,
     snackbarType: SNACK_BAR_DEFAULTS.SB_TYPE_ERROR,
@@ -87,7 +88,18 @@ export const CUSTOM_USER_PROFILE_SNACK_BAR_DATA: {
     snackbarType: SNACK_BAR_DEFAULTS.SB_TYPE_SUCCESS,
   },
   USER_PROFILE_PIC_REMOVED_SUCCESSFULLY: {
-    message:  '!! User Profile Picture Removed Successfully !!',
+    message: '!! User Profile Picture Removed Successfully !!',
+    performSomeActionButtonText: null,
+    dismissSnackBarButtonText: SNACK_BAR_DEFAULTS.SB_DEFAULT_DISMISS_BTN_TXT,
+    snackbarType: SNACK_BAR_DEFAULTS.SB_TYPE_SUCCESS,
+  },
+};
+
+export const CUSTOM_TRANSACTION_SNACK_BAR_DATA: {
+  TRANSACTION_DELETED_SUCCESSFULLY: CustomSnackbarData;
+} = {
+  TRANSACTION_DELETED_SUCCESSFULLY: {
+    message: '!! Transaction Deleted Successfully !!',
     performSomeActionButtonText: null,
     dismissSnackBarButtonText: SNACK_BAR_DEFAULTS.SB_DEFAULT_DISMISS_BTN_TXT,
     snackbarType: SNACK_BAR_DEFAULTS.SB_TYPE_SUCCESS,

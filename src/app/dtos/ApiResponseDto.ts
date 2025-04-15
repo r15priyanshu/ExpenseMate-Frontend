@@ -1,3 +1,4 @@
+import { TransactionDto } from './TransactionDto';
 import { UserDto } from './UserDto';
 
 export interface ApiResponseDto {
@@ -12,4 +13,5 @@ export interface ApiResponseDto {
 
 interface Data {
   user?: UserDto;
+  transaction?: TransactionDto;
 }
