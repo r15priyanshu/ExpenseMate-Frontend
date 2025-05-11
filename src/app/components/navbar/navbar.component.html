@@ -8,25 +8,21 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" routerLink="/home" routerLinkActive="custom-active-link"
-                        [routerLinkActiveOptions]="{exact:true}">HOME</a>
+                    <a class="nav-link" aria-current="page" [routerLink]="'/home'"
+                        [routerLinkActive]="'custom-active-link'">HOME</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" routerLink="/about" routerLinkActive="custom-active-link"
-                        [routerLinkActiveOptions]="{exact:true}">ABOUT</a>
+                    <a class="nav-link" [routerLink]="['/about']" [routerLinkActive]="'custom-active-link'">ABOUT</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" routerLink="/about/demo" routerLinkActive="custom-active-link"
-                        [routerLinkActiveOptions]="{exact:true}">DEMO</a>
-                </li>
+
                 @if(isUserLoggedIn){
                 <li class="nav-item">
-                    <a class="nav-link" routerLink="/dashboard/manageTransactions" routerLinkActive="custom-active-link"
-                        [routerLinkActiveOptions]="{exact:false}">DASHBOARD</a>
+                    <a class="nav-link" [routerLink]="['/dashboard']"
+                        [routerLinkActive]="'custom-active-link'" [routerLinkActiveOptions]="{exact:false}">DASHBOARD</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" routerLink="/profile" routerLinkActive="custom-active-link"
-                        [routerLinkActiveOptions]="{exact:true}">{{loggedInUserDetails?.firstName | uppercase}}</a>
+                    <a class="nav-link" [routerLink]="['/profile']"
+                        [routerLinkActive]="'custom-active-link'">{{loggedInUserDetails?.firstName | uppercase}}</a>
                 </li>
                 }
 

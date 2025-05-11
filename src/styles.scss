@@ -2,3 +2,10 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+// BELOW CLASS WILL BE USED TO STYLE ACTIVE LINKS IN NAVBAR AND DASHBOARD TABS
+.custom-active-link {
+    font-size: 18px;
+    font-weight: bold;
+}
+  

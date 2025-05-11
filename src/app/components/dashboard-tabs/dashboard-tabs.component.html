@@ -1,10 +1,15 @@
 <div>
     <ul class="nav nav-tabs nav-justified">
         <li class="nav-item">
-            <a routerLink="/dashboard/manageTransactions" class="nav-link">TRANSACTIONS</a>
+            <a routerLink="/dashboard/manageTransactions" class="nav-link"
+                [routerLinkActive]="'custom-active-link'">TRANSACTIONS</a>
         </li>
         <li class="nav-item">
-            <a routerLink="/dashboard/manageCategories" class="nav-link">CATEGORIES</a>
+            <a routerLink="/dashboard/manageCategories" class="nav-link"
+                [routerLinkActive]="'custom-active-link'">CATEGORIES</a>
+        </li>
+        <li class="nav-item">
+            <a routerLink="/dashboard/manageBooks" class="nav-link" [routerLinkActive]="'custom-active-link'">BOOKS</a>
         </li>
         <li class="nav-item">
             <a class="nav-link">SETTINGS</a>
