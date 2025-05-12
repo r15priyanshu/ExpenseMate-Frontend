@@ -63,6 +63,10 @@ export class LoginComponent {
     });
   }
 
+  loginWithGitHub(){
+    window.location.href = 'http://localhost:8080/oauth2/authorization/github';
+  }
+
   handleReset(loginForm: NgForm) {
     loginForm.reset(this.loginDataInitialValues);
   }

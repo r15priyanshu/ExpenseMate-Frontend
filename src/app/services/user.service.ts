@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UserDto } from '../dtos/UserDto';
 import { Observable } from 'rxjs';
@@ -11,8 +11,12 @@ import { ApiResponseDto } from '../dtos/ApiResponseDto';
 export class UserService {
   constructor(private httpClient: HttpClient) {}
 
-  updateUserByUserId(userId:string,userDtp:UserDto):Observable<UserDto>{
-    return this.httpClient.put<UserDto>(GlobalConstants.UPDATE_USER_BY_USERID_URL(userId),userDtp);
+  getUserByEmail(email:string):Observable<UserDto>{
+    return this.httpClient.get<UserDto>(GlobalConstants.GET_USER_BY_EMAIL_URL(email));
+  }
+
+  updateUserByUserId(userId:string,userDto:UserDto):Observable<UserDto>{
+    return this.httpClient.put<UserDto>(GlobalConstants.UPDATE_USER_BY_USERID_URL(userId),userDto);
   }
 
   removeProfilePicturByUserId(userId:string):Observable<ApiResponseDto>{

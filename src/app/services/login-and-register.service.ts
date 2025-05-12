@@ -65,7 +65,7 @@ export class LoginAndRegisterService {
     this.AuthDetailsBehaviourSubject.next({isUserLoggedIn: true,loggedInUserDetails: user})
   }
 
-  private saveToken(token: string) {
+  public saveToken(token: string) {
     this.utilityService.addItemInLocalStorage(
       GlobalConstants.JWT_TOKEN_KEY_FOR_LOCAL_STORAGE,
       token

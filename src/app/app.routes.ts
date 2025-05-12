@@ -9,6 +9,7 @@ import { ManageTransactionsComponent } from './components/manage-transactions/ma
 import { ManageBooksComponent } from './components/manage-books/manage-books.component';
 import { HomeComponent } from './pages/home/home.component';
 import { AboutComponent } from './pages/about/about.component';
+import { AuthComponent } from './pages/auth/auth.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -56,4 +57,5 @@ export const routes: Routes = [
   },
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'auth', component: AuthComponent}
 ];

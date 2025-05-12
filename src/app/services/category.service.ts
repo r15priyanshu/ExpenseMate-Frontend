@@ -18,7 +18,7 @@ export class CategoryService {
     //WHENEVER USER-DETAILS CHANGES , WILL UPDATE THE CATEGORIES LIST, WILL WORK ON PAGE REFRESH ALSO.
     loginAndRegisterService.AuthDetailsBehaviourSubject.asObservable().subscribe(
       () => {
-        console.log("Auth Details Changed !! Updating Categories !!")
+        console.log("Auth Details Changed !! Checking If Categories Update Is Required !!")
         this.updateCategoryList();
       }
     );
@@ -39,11 +39,14 @@ export class CategoryService {
   private updateCategoryList() {
     const { isUserLoggedIn, loggedInUserDetails } = this.loginAndRegisterService.AuthDetailsBehaviourSubject.value;
     if (isUserLoggedIn && loggedInUserDetails?.userId) {
+      console.log("User Is Logged In , Updating Categories Now !!")
       this.getCategoriesByUserId(loggedInUserDetails.userId).subscribe(
         (next) => {
           this.categoryListBehaviourSubject.next(next);
         }
       );
+    }else{
+      console.log("User Not Logged In , Skipping Categories Fetch !!")
     }
   }
 }

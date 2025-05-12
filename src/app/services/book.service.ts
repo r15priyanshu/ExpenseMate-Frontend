@@ -19,7 +19,7 @@ export class BookService {
     //WHENEVER USER-DETAILS CHANGES , WILL UPDATE THE BOOKS LIST, WILL WORK ON PAGE REFRESH ALSO.
     loginAndRegisterService.AuthDetailsBehaviourSubject.asObservable().subscribe(
       () => {
-        console.log("Auth Details Changed !! Updating Books !!")
+        console.log("Auth Details Changed !! Checking If Books Update Is Required !!")
         this.performBookReload()
       }
     );
@@ -36,11 +36,14 @@ export class BookService {
   private updateBookList() {
     const { isUserLoggedIn, loggedInUserDetails } = this.loginAndRegisterService.AuthDetailsBehaviourSubject.value;
     if (isUserLoggedIn && loggedInUserDetails?.userId) {
+      console.log("User Is Logged In , Updating Books Now !!")
       this.getBooksByUserId(loggedInUserDetails.userId).subscribe(
         (next) => {
           this.bookListBehaviourSubject.next(next);
         }
       );
+    }else{
+      console.log("User Not Logged In , Skipping Books Fetch !!")
     }
   }
 }

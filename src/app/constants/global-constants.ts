@@ -11,6 +11,8 @@ export const GlobalConstants = {
 
   REGISTER_URL: `${environment.BACKEND_BASE_URL}/auth/register`,
   LOGIN_URL: `${environment.BACKEND_BASE_URL}/auth/login`,
+  GITHUB_AUTHORIZATION_INITIATION_END_POINT : `${environment.BACKEND_BASE_URL}/oauth2/authorization/github`,
+  GET_USER_BY_EMAIL_URL : (email:string) => { return `${environment.BACKEND_BASE_URL}/users/email/${email}` },
   UPDATE_USER_BY_USERID_URL : (userId:string) => { return `${environment.BACKEND_BASE_URL}/users/${userId}` },
   UPDATE_PROFILE_PICTURE_BY_USERID_URL : (userId:string) => { return `${environment.BACKEND_BASE_URL}/users/updateProfilePicture/${userId}` },
   REMOVE_PROFILE_PICTURE_BY_USERID_URL : (userId:string) => { return `${environment.BACKEND_BASE_URL}/users/removeProfilePicture/${userId}` },
